@@ -22,8 +22,9 @@ load_dotenv(find_dotenv())
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get("SECRET_KEY")
-SECRET_KEY = "n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy"
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
+# SECRET_KEY = "n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy"
 if os.name == "nt":
     import platform
 
@@ -66,9 +67,9 @@ INSTALLED_APPS = [
     "authentication",
     "corsheaders",
     "Users",
-    "leaflet",
+    # "leaflet",
     "drf_yasg",
-    # "mapwidgets",
+    "mapwidgets",
     "oauth2_provider",
     "social_django",
     "rest_framework_social_oauth2",
@@ -96,6 +97,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "frontida_backend.urls"
@@ -188,7 +190,6 @@ CORS_ALLOW_CREDENTIALS = True
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -220,19 +221,19 @@ import django_heroku
 django_heroku.settings(locals())
 
 # Google map settings
-# GOOGLE_MAP_API_KEY = os.environ.get("GOOGLE_MAP_API_KEY")
-# MAP_WIDGETS = {
-#     "GooglePointFieldWidget": (
-#         ("zoom", 15),
-#         ("mapCenterLocationName", "delhi"),
-#         (
-#             "GooglePlaceAutocompleteOptions",
-#             {"componentRestrictions": {"country": "nl"}},
-#         ),
-#         ("markerFitZoom", 12),
-#     ),
-#     "GOOGLE_MAP_API_KEY": GOOGLE_MAP_API_KEY,
-# }
+GOOGLE_MAP_API_KEY = os.environ.get("GOOGLE_MAP_API_KEY")
+MAP_WIDGETS = {
+    "GooglePointFieldWidget": (
+        ("zoom", 15),
+        ("mapCenterLocationName", "delhi"),
+        (
+            "GooglePlaceAutocompleteOptions",
+            {"componentRestrictions": {"country": "nl"}},
+        ),
+        ("markerFitZoom", 12),
+    ),
+    "GOOGLE_MAP_API_KEY": GOOGLE_MAP_API_KEY,
+}
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
@@ -254,15 +255,5 @@ GDAL_LIBRARY_PATH = os.environ.get("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = os.environ.get("GEOS_LIBRARY_PATH")
 
 
-# DATABASES["default"] = dj_database_url.config()
-# DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
-
-
-STATIC_URL = "/static/"
-
-# only refers to the location where your static files should end up after running manage.py collectstatic. you shouldn't really need collectstatic) when developing locally
-STATIC_ROOT = "staticfiles"
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "../static"),)
 DATABASES["default"] = dj_database_url.config()
 DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
