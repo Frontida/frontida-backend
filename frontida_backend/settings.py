@@ -234,7 +234,6 @@ EMAIL_HOST_PASSWORD = "iicnoaupdzdaqgmf"
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 
 
-
 # Google map settings
 GOOGLE_MAP_API_KEY = config("GOOGLE_MAP_API_KEY")
 # GOOGLE_MAP_API_KEY = "AIzaSyA3P8hpXR0Tb0SH1ygLW__lmxBkYprSI2I"
