@@ -127,11 +127,9 @@ WSGI_APPLICATION = "frontida_backend.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-if  IS_PRODUCTION:
-    DATABASES["default"] = dj_database_url.config()
-    DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
-else:
-    DATABASES = {
+
+
+DATABASES = {
         "default": {
             "ENGINE": "django.contrib.gis.db.backends.postgis",
             "NAME": "frontida-backend",
@@ -145,6 +143,9 @@ else:
             "PORT": "5432",
         }
     }
+if IS_PRODUCTION:
+    DATABASES["default"] = dj_database_url.config()
+    DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
 
 
 
