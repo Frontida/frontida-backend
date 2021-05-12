@@ -15,8 +15,6 @@ build:
   packages:
     - gdal-bin
   languages:
-    - 'https://github.com/diowa/heroku-buildpack-rgeo-prep.git'
-    - 'https://github.com/peterkeen/heroku-buildpack-vendorbinaries.git'
     - python
 run:
   web: 'gunicorn frontida_backend.wsgi:application --preload --workers 1'
