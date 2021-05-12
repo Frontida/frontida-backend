@@ -3,20 +3,22 @@ setup:
     - plan: 'heroku-postgresql:hobby-dev'
       as: DATABASE
   config:
-    BUILD_WITH_GEO_LIBRARIES: '1'
-    DEBUG: 'True'
     DISABLE_COLLECTSTATIC: '1'
     EMAIL_HOST_PASSWORD: iicnoaupdzdaqgmf
     EMAIL_HOST_USER: healthcare.frontida@gmail.com
-    IS_PRODUCTION: 'TRUE'
+    GOOGLE_MAP_API_KEY: AIzaSyA3P8hpXR0Tb0SH1ygLW__lmxBkYprSI2I
+    IS_PRODUCTION: 'True'
     LD_LIBRARY_PATH: /app/lib
+    POSTGRES_PASSWORD: shivam0407
+    POSTGRES_USER: postgres
     SECRET_KEY: n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy
 build:
   packages:
     - gdal-bin
   languages:
     - python
-run:
-  web: 'gunicorn frontida_backend.wsgi:application --preload --workers 1'
-  python: manage.py collectstatic --noinput
+run: 
+  web: gunicorn frontida_backend.wsgi:application --preload --workers 1
+  python: manage.py makemigrations
   python: manage.py migrate
+  python: manage.py collectstatic --noinput
