@@ -106,6 +106,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "frontida_backend.wsgi.application"
 
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 DATABASES = {
