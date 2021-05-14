@@ -107,7 +107,7 @@ WSGI_APPLICATION = "frontida_backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-ON_HEROKU = os.environ.get('ON_HEROKU')
+# ON_HEROKU = os.environ.get('ON_HEROKU')
 DATABASES = {
     "default": {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
@@ -119,9 +119,9 @@ DATABASES = {
     }
 }
 
-if ON_HEROKU == True:
-    DATABASES["default"] = dj_database_url.config()
-    DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
+# if ON_HEROKU == True:
+DATABASES["default"] = dj_database_url.config()
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
     
 
 # Password validation
