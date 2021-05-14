@@ -12,9 +12,11 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import psycopg2
+import django_heroku
+import dj_database_url
+
 from django.urls import reverse_lazy
 from decouple import config
-import dj_database_url
 from dotenv import load_dotenv, find_dotenv
 
 load_dotenv(find_dotenv())
@@ -185,10 +187,6 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
-import django_heroku
-
-django_heroku.settings(locals())
-
 # Google map settings
 # GOOGLE_MAP_API_KEY = os.environ.get("GOOGLE_MAP_API_KEY")
 GOOGLE_MAP_API_KEY = "AIzaSyA3P8hpXR0Tb0SH1ygLW__lmxBkYprSI2I"
@@ -224,3 +222,5 @@ ON_HEROKU = os.environ.get("ON_HEROKU")
 if ON_HEROKU == True:
     DATABASES["default"] = dj_database_url.config()
     DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
+
+django_heroku.settings(locals())
