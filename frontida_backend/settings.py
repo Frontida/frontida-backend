@@ -14,7 +14,6 @@ import os
 import psycopg2
 import django_heroku
 import dj_database_url
-
 from django.urls import reverse_lazy
 from decouple import config
 from dotenv import load_dotenv, find_dotenv
@@ -218,9 +217,6 @@ AUTHENTICATION_BACKENDS = [
 GDAL_LIBRARY_PATH = os.environ.get("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = os.environ.get("GEOS_LIBRARY_PATH")
 
-ON_HEROKU = os.environ.get("ON_HEROKU")
-if ON_HEROKU == True:
-    DATABASES["default"] = dj_database_url.config()
-    DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
-
-django_heroku.settings(locals(), databases=False)
+django_heroku.settings(locals())
+DATABASES["default"] = dj_database_url.config()
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
