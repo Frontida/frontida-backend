@@ -12,18 +12,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 import psycopg2
+import django_heroku
+import dj_database_url
 from django.urls import reverse_lazy
 from decouple import config
-import dj_database_url
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 IS_PRODUCTION=config("IS_PRODUCTION")
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = config("SECRET_KEY")
-# print(SECRET_KEY)
-# SECRET_KEY = "n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy"
 if os.name == "nt":
     import platform
 
@@ -41,10 +41,10 @@ if os.name == "nt":
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.environ.get("DEBUG")
-DEBUG = True
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = ["frontida.herokuapp.com"]
 AUTH_USER_MODEL = "authentication.User"
@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     "authentication",
     "corsheaders",
     "Users",
-    # "leaflet",
     "drf_yasg",
     "mapwidgets",
     "oauth2_provider",
@@ -74,19 +73,6 @@ INSTALLED_APPS = [
     "rest_framework_social_oauth2",
 ]
 
-# # Provider specific settings
-# SOCIALACCOUNT_PROVIDERS = {
-#     "google": {
-#         # For each OAuth based provider, either add a ``SocialApp``
-#         # (``socialaccount`` app) containing the required client
-#         # credentials, or list them here:
-#         "APP": {
-#             "client_id": os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_CLIENT_ID"),
-#             "secret": os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"),
-#             "key": "",
-#         }
-#     }
-# }
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -112,11 +98,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # socail auth
                 "django.template.context_processors.request",
-                # social auth krishna
-                "social_django.context_processors.backends",
-                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -124,27 +106,21 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "frontida_backend.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 
 DATABASES = {
-        "default": {
-            "ENGINE": "django.contrib.gis.db.backends.postgis",
-            "NAME": "frontida-backend",
-            # "USER": os.environ.get("POSTGRES_USER"),
-            "USER": config("POSTGRES_USER"),
-            # "USER": "postgres",
-            # "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
-            "PASSWORD": config("POSTGRES_PASSWORD"),
-            # "PASSWORD": "shivam0407",
-            "HOST": "localhost",
-            "PORT": "5432",
-        }
+    "default": {
+        "ENGINE": "django.contrib.gis.db.backends.postgis",
+        "NAME": "frontida-backend",
+        "USER": os.environ.get("POSTGRES_USER"),
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD"),
+        "HOST": "localhost",
+        "PORT": "5432",
     }
-DATABASES["default"] = dj_database_url.config()
-DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
+}
+
 
 
 
@@ -201,14 +177,9 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        # Outh2 settings
-        "oauth2_provider.contrib.rest_framework.OAuth2Authentication",
-        "rest_framework_social_oauth2.authentication.SocialAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
-        # 'rest_framework.permissions.IsAuthenticated',
-        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
@@ -224,14 +195,8 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_USER = config("EMAIL_HOST_USER")
-EMAIL_HOST_USER = "healthcare.frontida@gmail.com"
-EMAIL_HOST_PASSWORD = "iicnoaupdzdaqgmf"
-
-
-EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
-
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 # Google map settings
 GOOGLE_MAP_API_KEY = config("GOOGLE_MAP_API_KEY")
@@ -248,6 +213,7 @@ MAP_WIDGETS = {
     ),
     "GOOGLE_MAP_API_KEY": GOOGLE_MAP_API_KEY,
 }
+
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
     "django.contrib.auth.backends.ModelBackend",
@@ -260,14 +226,9 @@ AUTHENTICATION_BACKENDS = [
     "social_core.backends.google.GoogleOAuth2",
 ]
 
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = (os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"),)
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = (config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET"),)
-# # SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_CLIENT_ID"),)
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = (config("SOCIAL_AUTH_GOOGLE_OAUTH2_CLIENT_ID"),)
-
 GDAL_LIBRARY_PATH = os.environ.get("GDAL_LIBRARY_PATH")
 GEOS_LIBRARY_PATH = os.environ.get("GEOS_LIBRARY_PATH")
 
-import django_heroku
 django_heroku.settings(locals())
-
+DATABASES["default"] = dj_database_url.config()
+DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
