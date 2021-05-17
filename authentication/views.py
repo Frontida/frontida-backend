@@ -269,8 +269,9 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
                 {"success": "Password reset link sent, check your inbox"},
                 status=status.HTTP_200_OK,
             )
+
         except Exception as exp:
-            return Response({"error": "User not registered with this email"} ,status=status.HTTP_200_OK)
+            return Response({"error": "User not registered with this email"} ,status=status.HTTP_400_BAD_REQUEST)
 
 
 class PasswordResetConfirm(generics.GenericAPIView):
