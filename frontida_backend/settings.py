@@ -220,7 +220,6 @@ GEOS_LIBRARY_PATH = os.environ.get("GEOS_LIBRARY_PATH")
 
 django_heroku.settings(locals())
 ON_HEROKU = os.environ.get("ON_HEROKU")
-
-if ON_HEROKU:
+if ON_HEROKU == True:
     DATABASES["default"] = dj_database_url.config()
     DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
