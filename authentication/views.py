@@ -238,7 +238,7 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             if len(error_keys) > 0 and len(error_values) > 0:
                 return Response({f"{error_keys[0]}": f"{error_values[0][0]}"})
 
-        email = serializer.data["email"]
+        print(request.headers["Origin"])
 
         try:
             user = User.objects.get(email=email)
