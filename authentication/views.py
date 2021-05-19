@@ -108,8 +108,13 @@ class LoginAPI(APIView):
             return Response({"error": "User not verified"}, status=status.HTTP_200_OK)
         
         login(request, user)
+        
+        token = Token.objects.filter(user=user)
+        if len(token) > 0:
+            token.delete()
+        
         token = Token.objects.create(user=user).key
-        print(token)
+        
         try:
             user_details = UserDetailsSerializers(
                 instance=UserDetails.objects.get(account=request.user)
