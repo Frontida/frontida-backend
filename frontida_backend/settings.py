@@ -155,6 +155,8 @@ CORS_ORIGIN_ALLOW_ALL = (
     True  # If this is used then `CORS_ORIGIN_WHITELIST` will not have any effect
 )
 CORS_ALLOW_CREDENTIALS = True
+# CORS_ALLOWED_ORIGINS = [
+# ]
 # CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:3030',
 # ] # If this is used, then not need to use `CORS_ORIGIN_ALLOW_ALL = True`
@@ -175,7 +177,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",
+        "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_SCHEMA_CLASS": "rest_framework.schemas.coreapi.AutoSchema",
 }
@@ -220,7 +222,6 @@ GEOS_LIBRARY_PATH = os.environ.get("GEOS_LIBRARY_PATH")
 
 django_heroku.settings(locals())
 ON_HEROKU = os.environ.get("ON_HEROKU")
-
-if ON_HEROKU:
+if ON_HEROKU == True:
     DATABASES["default"] = dj_database_url.config()
     DATABASES["default"]["ENGINE"] = "django.contrib.gis.db.backends.postgis"
