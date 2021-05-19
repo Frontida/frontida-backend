@@ -1,56 +1,58 @@
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
-from rest_framework import generics, status, views
+import os
+from django.contrib.auth import authenticate, login, logout
+from rest_framework import status, generics
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
-from .serializers import *
-from .models import User, Token, UserDetails
+from .serializers import (
+    RegisterSerializer, 
+    LoginSerializer, 
+    PasswordResetEmailRequestSerializer, 
+    UserDetailsSerializers, 
+    SetNewPasswordSerializer
+) 
+from .models import User, UserDetails
 from rest_framework.authtoken.models import Token
-from .utils import Utils
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.conf import settings
-from .renderers import UserRenderer
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import (
-    smart_str,
     force_str,
     smart_bytes,
     DjangoUnicodeDecodeError,
 )
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from django.contrib.auth import logout
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from django.core.mail import EmailMessage
 
-
 def UserVerification(request, uidb64, token):
-    if request.method == "GET":
-        try:
-            user_id = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(id=user_id)
-        except DjangoUnicodeDecodeError as exp:
-            raise AuthenticationFailed("Not a valid account verification link", 401)
-        if token != Token.objects.get(user=user).key:
-            raise AuthenticationFailed("Not a valid account verification link", 401)
-        else:
-            if not user.is_verified:
-                user.is_verified = True
-                user.save()
-            user.auth_token.delete()
-            Token.objects.create(user=user)
-            frontend_login_url = "https://frontida.netlify.app/signin"
-            return redirect(frontend_login_url)
+    try:
+        user_id = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(id=user_id)
+    except DjangoUnicodeDecodeError:
+        raise AuthenticationFailed("Not a valid account verification link", 401)
+    except User.DoesNotExist:
+        raise AuthenticationFailed("Not a valid account verification link", 401)
+
+    if token != Token.objects.get(user=user).key:
+        raise AuthenticationFailed("Not a valid account verification link", 401)
+    else:
+        if not user.is_verified:
+            user.is_verified = True
+            user.save()
+        user.auth_token.delete()
+        Token.objects.create(user=user)
+        frontend_login_url = os.environ.get("FRONTEND_LOGIN_URL")
+        return redirect(frontend_login_url)
 
 
-class RegisterView(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
+class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid():
             error_values = list(serializer.errors.values())
             error_keys = list(serializer.errors.keys())
@@ -84,12 +86,11 @@ class RegisterView(generics.GenericAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class LoginAPI(generics.GenericAPIView):
-    serializer_class = LoginSerializer
+class LoginAPI(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = LoginSerializer(data=request.data)
 
         if not serializer.is_valid():
             error_values = list(serializer.errors.values())
@@ -107,8 +108,8 @@ class LoginAPI(generics.GenericAPIView):
             return Response({"error": "User not verified"}, status=status.HTTP_200_OK)
         
         login(request, user)
-        token = Token.objects.get(user=request.user).key
-        
+        token = Token.objects.create(user=user).key
+        print(token)
         try:
             user_details = UserDetailsSerializers(
                 instance=UserDetails.objects.get(account=request.user)
@@ -129,7 +130,7 @@ class LoginAPI(generics.GenericAPIView):
         return Response(response_data, status=status.HTTP_200_OK)
 
 
-class LogoutView(generics.GenericAPIView):
+class LogoutView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -146,34 +147,33 @@ class LogoutView(generics.GenericAPIView):
         )
 
 
-class UserDetailsCreate(APIView):
+class UserDetailsView(APIView):
     authentication_classes = [TokenAuthentication]
-    model = UserDetails
-    serializer_class = UserDetailsSerializers
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
+        # if not request.user.is_authenticated:
+        #     return Response(
+        #         {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
+        #     )
 
         try:
             user_details = UserDetails.objects.get(account=request.user)
-            serializer = self.serializer_class(user_details)
+            serializer = UserDetailsSerializers(user_details)
             email = request.user.email
             response = {"data": serializer.data, "email": email}
             return Response(response, status=status.HTTP_200_OK)
-        except UserDetails.DoesNotExist as exp:
+        except UserDetails.DoesNotExist:
             return Response(
                 {"error": "User details not provided"}, status=status.HTTP_200_OK
             )
 
     def post(self, request):
         serializer = UserDetailsSerializers(data=request.data)
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
+        # if not request.user.is_authenticated:
+        #     return Response(
+        #         {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
+        #     )
 
         if not serializer.is_valid():
             error_values = list(serializer.errors.values())
@@ -182,22 +182,22 @@ class UserDetailsCreate(APIView):
                 return Response({f"{error_keys[0]}": f"{error_values[0][0]}"})
 
         try:
-            user_details = UserDetails.objects.get(account=request.user)
+            UserDetails.objects.get(account=request.user)
             return Response(
                 {
                     "DetailsExists": "Requested user details already exist try updating it"
                 }
             )
-        except UserDetails.DoesNotExist as exp:
+        except UserDetails.DoesNotExist:
             serializer.save(account=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class RequestPasswordResetEmail(generics.GenericAPIView):
-    serializer_class = PasswordResetEmailRequestSerializer
+class RequestPasswordResetEmail(APIView):
+    permission_classes = [AllowAny]
 
     def post(self, request):
-        serializer = self.serializer_class(data=request.data)
+        serializer = PasswordResetEmailRequestSerializer(data=request.data)
 
         if not serializer.is_valid():
             error_values = list(serializer.errors.values())
@@ -205,13 +205,12 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
             if len(error_keys) > 0 and len(error_values) > 0:
                 return Response({f"{error_keys[0]}": f"{error_values[0][0]}"})
 
-        print(request.headers["Origin"])
-
+        email = serializer.validated_data.get("email")
         try:
             user = User.objects.get(email=email)
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = Token.objects.get(user=user).key
-            password_reset_link = request.headers["Origin"] + reverse(
+            password_reset_link = request.META.get("HTTP_HOST") + reverse(
                 "password-reset-confirm", kwargs={"uidb64": uidb64, "token": token}
             )
 
@@ -235,12 +234,12 @@ class RequestPasswordResetEmail(generics.GenericAPIView):
                 status=status.HTTP_200_OK,
             )
 
-        except Exception as exp:
+        except User.DoesNotExist:
             return Response({"error": "No user registered with this email"} ,status=status.HTTP_400_BAD_REQUEST)
 
 
-class PasswordResetConfirm(generics.GenericAPIView):
-    serializer_class = SetNewPasswordSerializer
+class PasswordResetConfirm(APIView):
+    permission_classes = [AllowAny]
 
     def get(self, request, uidb64, token):
         try:
@@ -257,10 +256,11 @@ class PasswordResetConfirm(generics.GenericAPIView):
         try:
             user_id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(id=user_id)
+            
             if token != Token.objects.get(user=user).key:
                 raise AuthenticationFailed("Not a valid reset link", 200)
             else:
-                serializer = self.serializer_class(data=request.data)
+                serializer = SetNewPasswordSerializer(data=request.data)
 
                 if not serializer.is_valid():
                     error_values = list(serializer.errors.values())
@@ -278,5 +278,6 @@ class PasswordResetConfirm(generics.GenericAPIView):
                 return Response(
                     {"success": "Password reset successfull"}, status=status.HTTP_200_OK
                 )
+        
         except DjangoUnicodeDecodeError:
             raise AuthenticationFailed("Not a valid user", 200)
