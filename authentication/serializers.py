@@ -37,7 +37,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class PasswordResetEmailRequestSerializer(serializers.Serializer):
-    email=serializers.EmailField()
+    email=serializers.EmailField(required=True)
 
     class Meta:
         fields = ['email']
