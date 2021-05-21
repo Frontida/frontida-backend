@@ -70,7 +70,7 @@ class CompanyDetailsViewSets(ModelViewSet):
             )
         try:
             company = CompanyDetails.objects.get(pk=pk)
-        except ComapnyDetails.DoesNotExist as exp:
+        except CompanyDetails.DoesNotExist as exp:
             return Response(
                 {"error": "Company with given pk not found"},
                 status=status.HTTP_404_NOT_FOUND,
