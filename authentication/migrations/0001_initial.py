@@ -12,45 +12,127 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('username', models.CharField(blank=True, max_length=255)),
-                ('email', models.EmailField(db_index=True, max_length=255, unique=True)),
-                ('is_verified', models.BooleanField(default=False)),
-                ('is_active', models.BooleanField(default=True)),
-                ('is_staff', models.BooleanField(default=False)),
-                ('is_superuser', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now_add=True)),
-                ('user_type', models.CharField(choices=[('MEDICAL STORE', 'MEDICAL STORE'), ('AMBULANCE', 'AMBULANCE'), ('BLOOD BANK', 'BLOOD BANK'), ('USER', 'USER')], max_length=15)),
-                ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
-                ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                ("username", models.CharField(blank=True, max_length=255)),
+                (
+                    "email",
+                    models.EmailField(db_index=True, max_length=255, unique=True),
+                ),
+                ("is_verified", models.BooleanField(default=False)),
+                ("is_active", models.BooleanField(default=True)),
+                ("is_staff", models.BooleanField(default=False)),
+                ("is_superuser", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user_type",
+                    models.CharField(
+                        choices=[
+                            ("MEDICAL STORE", "MEDICAL STORE"),
+                            ("AMBULANCE", "AMBULANCE"),
+                            ("BLOOD BANK", "BLOOD BANK"),
+                            ("USER", "USER"),
+                        ],
+                        max_length=15,
+                    ),
+                ),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="The groups this user belongs to. A user will get all permissions granted to each of their groups.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Group",
+                        verbose_name="groups",
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        blank=True,
+                        help_text="Specific permissions for this user.",
+                        related_name="user_set",
+                        related_query_name="user",
+                        to="auth.Permission",
+                        verbose_name="user permissions",
+                    ),
+                ),
             ],
             options={
-                'unique_together': {('email', 'user_type')},
+                "unique_together": {("email", "user_type")},
             },
         ),
         migrations.CreateModel(
-            name='UserDetails',
+            name="UserDetails",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('store_name', models.CharField(max_length=100)),
-                ('store_owner', models.CharField(max_length=70)),
-                ('address', models.CharField(max_length=500)),
-                ('landmark', models.CharField(max_length=50, null=True)),
-                ('city', models.CharField(choices=[('Jaipur', 'Jaipur'), ('Kanpur', 'Kanpur'), ('Jabalpur', 'Jabalpur'), ('Indore', 'Indore'), ('Nainital', 'Nainital'), ('Ahmedabad', 'Ahmedabad'), ('Gandinagar', 'Gandhinagar')], max_length=50)),
-                ('pincode', models.PositiveIntegerField()),
-                ('contact', models.BigIntegerField()),
-                ('point', django.contrib.gis.db.models.fields.PointField(default=django.contrib.gis.geos.point.Point(0.0, 0.0), geography=True, srid=4326)),
-                ('account', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("store_name", models.CharField(max_length=100)),
+                ("store_owner", models.CharField(max_length=70)),
+                ("address", models.CharField(max_length=500)),
+                ("landmark", models.CharField(max_length=50, null=True)),
+                (
+                    "city",
+                    models.CharField(
+                        choices=[
+                            ("Jaipur", "Jaipur"),
+                            ("Kanpur", "Kanpur"),
+                            ("Jabalpur", "Jabalpur"),
+                            ("Indore", "Indore"),
+                            ("Nainital", "Nainital"),
+                            ("Ahmedabad", "Ahmedabad"),
+                            ("Gandinagar", "Gandhinagar"),
+                        ],
+                        max_length=50,
+                    ),
+                ),
+                ("pincode", models.PositiveIntegerField()),
+                ("contact", models.BigIntegerField()),
+                (
+                    "point",
+                    django.contrib.gis.db.models.fields.PointField(
+                        default=django.contrib.gis.geos.point.Point(0.0, 0.0),
+                        geography=True,
+                        srid=4326,
+                    ),
+                ),
+                (
+                    "account",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
     ]

@@ -4,12 +4,12 @@ from rest_framework import status, generics
 from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.response import Response
 from .serializers import (
-    RegisterSerializer, 
-    LoginSerializer, 
-    PasswordResetEmailRequestSerializer, 
-    UserDetailsSerializers, 
-    SetNewPasswordSerializer
-) 
+    RegisterSerializer,
+    LoginSerializer,
+    PasswordResetEmailRequestSerializer,
+    UserDetailsSerializers,
+    SetNewPasswordSerializer,
+)
 from .models import User, UserDetails
 from rest_framework.authtoken.models import Token
 from django.contrib.sites.shortcuts import get_current_site
@@ -26,6 +26,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from django.core.mail import EmailMessage
+
 
 def UserVerification(request, uidb64, token):
     try:
@@ -106,15 +107,15 @@ class LoginAPI(APIView):
             return Response({"error": "Invalid Credentials"}, status=status.HTTP_200_OK)
         if not user.is_verified:
             return Response({"error": "User not verified"}, status=status.HTTP_200_OK)
-        
+
         login(request, user)
-        
+
         token = Token.objects.filter(user=user)
         if len(token) > 0:
             token.delete()
-        
+
         token = Token.objects.create(user=user).key
-        
+
         try:
             user_details = UserDetailsSerializers(
                 instance=UserDetails.objects.get(account=request.user)
@@ -124,7 +125,7 @@ class LoginAPI(APIView):
                 {"NoUserDetails": "User details not provided", "token": token},
                 status=status.HTTP_200_OK,
             )
-        
+
         response_data = {
             "email": serializer.data.get("email"),
             "user_type": request.user.user_type,
@@ -220,7 +221,10 @@ class RequestPasswordResetEmail(APIView):
             )
 
             subject = "Password reset link for " + str(user.email)
-            message = "Hello, \n Below is the link to reset your password \n" + password_reset_link
+            message = (
+                "Hello, \n Below is the link to reset your password \n"
+                + password_reset_link
+            )
             from_email = settings.EMAIL_HOST_USER
             recipient_list = [
                 user.email,
@@ -240,7 +244,10 @@ class RequestPasswordResetEmail(APIView):
             )
 
         except User.DoesNotExist:
-            return Response({"error": "No user registered with this email"} ,status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "No user registered with this email"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
 
 class PasswordResetConfirm(APIView):
@@ -261,7 +268,7 @@ class PasswordResetConfirm(APIView):
         try:
             user_id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(id=user_id)
-            
+
             if token != Token.objects.get(user=user).key:
                 raise AuthenticationFailed("Not a valid reset link", 200)
             else:
@@ -277,12 +284,15 @@ class PasswordResetConfirm(APIView):
                 password2 = serializer.data["password2"]
 
                 if password1 != password2:
-                    return Response({'error':'The two passwords do not match'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response(
+                        {"error": "The two passwords do not match"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
                 user.set_password(password1)
                 user.save()
                 return Response(
                     {"success": "Password reset successfull"}, status=status.HTTP_200_OK
                 )
-        
+
         except DjangoUnicodeDecodeError:
             raise AuthenticationFailed("Not a valid user", 200)
