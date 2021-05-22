@@ -309,7 +309,7 @@ class SalesViewSets(ModelViewSet):
                 )
 
             for medicine in med_inventory:
-                if required_quantity <= medicine.medicine_quantity:
+                if required_quantity < medicine.medicine_quantity:
                     medicine.medicine_quantity -= required_quantity
                     medicine.save()
                     break
