@@ -353,7 +353,7 @@ class CountAPI(APIView):
         if not request.user.is_authenticated:
             return Response(
                 {"Authentication failed": "User not authenticated"},
-                status=status.HTTP_200_OK,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
 
         medicine_names = [
@@ -387,7 +387,7 @@ class ExpiryAPI(APIView):
         if not request.user.is_authenticated:
             return Response(
                 {"Authentication failed": "User not authenticated"},
-                status=status.HTTP_200_OK,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
         expired_medicine = CheckExpiry.check(request.user)
         return Response({"medicine_names": expired_medicine}, status=status.HTTP_200_OK)
@@ -401,7 +401,7 @@ class StockAPI(APIView):
         if not request.user.is_authenticated:
             return Response(
                 {"Authentication failed": "User not authenticated"},
-                status=status.HTTP_200_OK,
+                status=status.HTTP_401_UNAUTHORIZED,
             )
         medicine_names = [
             medicine.medicine_name

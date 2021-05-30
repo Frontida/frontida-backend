@@ -104,9 +104,13 @@ class LoginAPI(APIView):
         )
 
         if not user:
-            return Response({"error": "Invalid Credentials"}, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "Invalid Credentials"}, status=status.HTTP_401_UNAUTHORIZED
+            )
         if not user.is_verified:
-            return Response({"error": "User not verified"}, status=status.HTTP_200_OK)
+            return Response(
+                {"error": "User not verified"}, status=status.HTTP_401_UNAUTHORIZED
+            )
 
         login(request, user)
 
@@ -144,7 +148,7 @@ class LogoutView(APIView):
         try:
             request.user.auth_token.delete()
         except Exception as exp:
-            raise AuthenticationFailed(exp, 200)
+            raise AuthenticationFailed(exp, 401)
 
         logout(request)
 
@@ -171,7 +175,8 @@ class UserDetailsView(APIView):
             return Response(response, status=status.HTTP_200_OK)
         except UserDetails.DoesNotExist:
             return Response(
-                {"error": "User details not provided"}, status=status.HTTP_200_OK
+                {"error": "User details not provided"},
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
     def post(self, request):
@@ -192,7 +197,8 @@ class UserDetailsView(APIView):
             return Response(
                 {
                     "DetailsExists": "Requested user details already exist try updating it"
-                }
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
         except UserDetails.DoesNotExist:
             serializer.save(account=request.user)
@@ -258,11 +264,11 @@ class PasswordResetConfirm(APIView):
             user_id = force_str(urlsafe_base64_decode(uidb64))
             user = User.objects.get(id=user_id)
             if token != Token.objects.get(user=user).key:
-                raise AuthenticationFailed("Not a valid reset link", 200)
+                raise AuthenticationFailed("Not a valid reset link", 400)
             else:
                 return Response({"success": "Token authenticated"})
         except DjangoUnicodeDecodeError:
-            raise AuthenticationFailed("Not a valid reset link", 200)
+            raise AuthenticationFailed("Not a valid reset link", 400)
 
     def patch(self, request, uidb64, token):
         try:
@@ -270,7 +276,7 @@ class PasswordResetConfirm(APIView):
             user = User.objects.get(id=user_id)
 
             if token != Token.objects.get(user=user).key:
-                raise AuthenticationFailed("Not a valid reset link", 200)
+                raise AuthenticationFailed("Not a valid reset link", 400)
             else:
                 serializer = SetNewPasswordSerializer(data=request.data)
 
@@ -295,4 +301,4 @@ class PasswordResetConfirm(APIView):
                 )
 
         except DjangoUnicodeDecodeError:
-            raise AuthenticationFailed("Not a valid user", 200)
+            raise AuthenticationFailed("Not a valid user", 401)
