@@ -36,19 +36,11 @@ class CompanyDetailsViewSets(ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     def list(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         serializer = self.serializer_class(self.queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         print(request.user)
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         if request.user.is_superuser:
             serializer = self.serializer_class(data=request.data)
 
@@ -62,12 +54,12 @@ class CompanyDetailsViewSets(ModelViewSet):
             return Response(
                 {"Comanay Details": serializer.data}, status=status.HTTP_200_OK
             )
+        else:
+            return Response(
+                {"error": "permission denied"}, status=status.HTTP_401_UNAUTHORIZED
+            )
 
     def retrieve(self, request, pk=None):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         try:
             company = CompanyDetails.objects.get(pk=pk)
         except CompanyDetails.DoesNotExist as exp:
@@ -79,10 +71,6 @@ class CompanyDetailsViewSets(ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, pk=None):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         if request.user.is_superuser:
             instance = self.get_object()
             serializer = self.serializer_class(data=request.data)
@@ -106,10 +94,6 @@ class CompanyDetailsViewSets(ModelViewSet):
             )
 
     def partial_update(self, request, pk=None):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         if request.user.is_superuser:
             instance = self.get_object()
             serializer = self.serializer_class(data=request.data)
@@ -127,12 +111,12 @@ class CompanyDetailsViewSets(ModelViewSet):
             instance.gst_number = serializer.data["gst_number"]
             instance.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(
+                {"error": "permission denied"}, status=status.HTTP_401_UNAUTHORIZED
+            )
 
     def destroy(self, request, pk=None):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         if request.user.is_superuser:
             instance = self.get_object()
             serializer = self.serializer_class(data=instance)
@@ -165,10 +149,6 @@ class PurchaseViewSets(ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     def list(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         purchases = Purchase.objects.filter(account=request.user)
         company_name = [
             company.company_name for company in CompanyDetails.objects.all()
@@ -178,11 +158,6 @@ class PurchaseViewSets(ModelViewSet):
         return Response(responsedata, status=status.HTTP_200_OK)
 
     def create(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged  in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
-
         serializer = self.serializer_class(data=request.data)
 
         if not serializer.is_valid():
@@ -243,11 +218,6 @@ class SalesViewSets(ModelViewSet):
     authentication_classes = [TokenAuthentication]
 
     def list(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
-
         sales = Sales.objects.filter(account=request.user)
         medicine_name = [
             medicine.medicine_name
@@ -269,10 +239,6 @@ class SalesViewSets(ModelViewSet):
         return Response(responsedata, status=status.HTTP_200_OK)
 
     def create(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"error": "User not logged in"}, status=status.HTTP_401_UNAUTHORIZED
-            )
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid():
             error_values = list(serializer.errors.values())
@@ -333,29 +299,13 @@ class SalesViewSets(ModelViewSet):
             )
 
 
-#     def retrieve(self, request, pk=None):
-#         try:
-#             purchase = Purchase.objects.get(pk=pk)
-#             serializer = self.serializer_class(purchase)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except Purchase.DoesNotExist as exp:
-#             return Response(exp, status=status.HTTP_400_BAD_REQUEST)
-
-
 # Count of purchases, count of sales and count of total medicines
 class CountAPI(APIView):
     queryset = Purchase.objects.all()
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
-    # class RegisterView(generics.GenericAPIView):
     def get(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"Authentication failed": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
-
         medicine_names = [
             medicine.medicine_name
             for medicine in MedicineInventory.objects.filter(account=request.user)
@@ -384,11 +334,6 @@ class ExpiryAPI(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"Authentication failed": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
         expired_medicine = CheckExpiry.check(request.user)
         return Response({"medicine_names": expired_medicine}, status=status.HTTP_200_OK)
 
@@ -398,11 +343,6 @@ class StockAPI(APIView):
     authentication_classes = [TokenAuthentication]
 
     def get(self, request):
-        if not request.user.is_authenticated:
-            return Response(
-                {"Authentication failed": "User not authenticated"},
-                status=status.HTTP_401_UNAUTHORIZED,
-            )
         medicine_names = [
             medicine.medicine_name
             for medicine in MedicineInventory.objects.filter(account=request.user)
