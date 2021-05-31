@@ -70,7 +70,7 @@ class CompanyDetailsViewSets(ModelViewSet):
             )
         try:
             company = CompanyDetails.objects.get(pk=pk)
-        except ComapnyDetails.DoesNotExist as exp:
+        except CompanyDetails.DoesNotExist as exp:
             return Response(
                 {"error": "Company with given pk not found"},
                 status=status.HTTP_404_NOT_FOUND,
@@ -309,7 +309,7 @@ class SalesViewSets(ModelViewSet):
                 )
 
             for medicine in med_inventory:
-                if required_quantity <= medicine.medicine_quantity:
+                if required_quantity < medicine.medicine_quantity:
                     medicine.medicine_quantity -= required_quantity
                     medicine.save()
                     break
