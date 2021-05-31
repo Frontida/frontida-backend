@@ -299,22 +299,12 @@ class SalesViewSets(ModelViewSet):
             )
 
 
-#     def retrieve(self, request, pk=None):
-#         try:
-#             purchase = Purchase.objects.get(pk=pk)
-#             serializer = self.serializer_class(purchase)
-#             return Response(serializer.data, status=status.HTTP_200_OK)
-#         except Purchase.DoesNotExist as exp:
-#             return Response(exp, status=status.HTTP_400_BAD_REQUEST)
-
-
 # Count of purchases, count of sales and count of total medicines
 class CountAPI(APIView):
     queryset = Purchase.objects.all()
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
 
-    # class RegisterView(generics.GenericAPIView):
     def get(self, request):
         medicine_names = [
             medicine.medicine_name
