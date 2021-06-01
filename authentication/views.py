@@ -222,8 +222,12 @@ class RequestPasswordResetEmail(APIView):
             user = User.objects.get(email=email)
             uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
             token = Token.objects.get(user=user).key
-            password_reset_link = request.META.get("HTTP_HOST") + reverse(
-                "password-reset-confirm", kwargs={"uidb64": uidb64, "token": token}
+            password_reset_link = (
+                "https://frontida.netlify.app/resetPassword/"
+                + uidb64
+                + "/"
+                + token
+                + "/"
             )
 
             subject = "Password reset link for " + str(user.email)
