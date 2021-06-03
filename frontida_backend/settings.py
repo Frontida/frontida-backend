@@ -191,10 +191,8 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
 
 # Google map settings
 # GOOGLE_MAP_API_KEY = os.environ.get("GOOGLE_MAP_API_KEY")
-GOOGLE_MAP_API_KEY = "AIzaSyA3P8hpXR0Tb0SH1ygLW__lmxBkYprSI2I"
 MAP_WIDGETS = {
     "GooglePointFieldWidget": (
-        ("zoom", 15),
         ("mapCenterLocationName", "delhi"),
         (
             "GooglePlaceAutocompleteOptions",
@@ -202,7 +200,7 @@ MAP_WIDGETS = {
         ),
         ("markerFitZoom", 12),
     ),
-    "GOOGLE_MAP_API_KEY": GOOGLE_MAP_API_KEY,
+    "GOOGLE_MAP_API_KEY": os.environ.get("GOOGLE_MAP_API_KEY"),
 }
 
 AUTHENTICATION_BACKENDS = [

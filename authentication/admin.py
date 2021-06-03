@@ -1,15 +1,12 @@
 from django.contrib import admin
-
-# from leaflet.admin import LeafletGeoAdmin
+from django.db import models
 from .models import User, UserDetails
-from django.contrib.gis.db.models import GeometryField
-from django.forms.widgets import TextInput
-from mapwidgets.widgets import GooglePointFieldInlineWidget
+from django.contrib.gis.db import models
+from mapwidgets.widgets import GooglePointFieldWidget
 
 
 class PointLocation(admin.ModelAdmin):
-    formfield_overrides = {GeometryField: {"widget": GooglePointFieldInlineWidget}}
-
+    formfield_overrides = {models.PointField: {"widget": GooglePointFieldWidget}}
 
 admin.site.register(User)
 admin.site.register(UserDetails, PointLocation)
