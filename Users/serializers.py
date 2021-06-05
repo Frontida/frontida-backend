@@ -1,6 +1,4 @@
 from rest_framework import serializers
-from rest_framework.response import Response
-from authentication.models import User, UserDetails
 
 
 class SearchMedicineSerializer(serializers.Serializer):

@@ -1,8 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
-
-from Users.views import profile
-
+# from Users.views import profile
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -31,5 +29,5 @@ urlpatterns = [
     path("auth/", include("authentication.urls")),
     path("medical-store/", include("medical_store.urls")),
     path("users/", include("Users.urls")),
-    path("accounts/profile/", profile, name="profile"),
+    # path("accounts/profile/", profile, name="profile"),
 ]
