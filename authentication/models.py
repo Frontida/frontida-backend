@@ -27,6 +27,7 @@ CITY = [
     ("Nainital", "Nainital"),
     ("Ahmedabad", "Ahmedabad"),
     ("Gandinagar", "Gandhinagar"),
+    ("Bhilwara", "Bhilwara"),
 ]
 
 
