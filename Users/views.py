@@ -4,9 +4,9 @@ from medical_store.models import *
 from rest_framework.permissions import AllowAny
 from rest_framework.decorators import action
 from rest_framework.generics import GenericAPIView
-from .serializers import *
-from authentication.models import UserDetails
-from authentication.serializers import UserDetailsSerializers
+from .serializers import SearchMedicineSerializer
+from authentication.Models.userdetails import UserDetails
+from authentication.Serializers.userdetailsserializer import UserDetailsSerializers
 from django.contrib.gis.measure import D
 from django.contrib.gis.geos import GEOSGeometry
 from medical_store.models import MedicineInventory

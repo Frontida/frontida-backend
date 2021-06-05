@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.db import models
-from .models import User, UserDetails
+from .Models.user import User
+from .Models.userdetails import UserDetails
 from django.contrib.gis.db import models
 from mapwidgets.widgets import GooglePointFieldWidget
 

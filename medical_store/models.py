@@ -3,7 +3,7 @@ from django.db import models
 # from django_google_maps import fields as map_fields
 import datetime
 from django.core.validators import MaxValueValidator, MinValueValidator
-from authentication.models import User
+from authentication.Models.user import User
 
 # Medicine Inventory
 class MedicineInventory(models.Model):
