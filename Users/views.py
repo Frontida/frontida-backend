@@ -26,8 +26,8 @@ def profile(request):
 class SearchMedicineAPI(GenericAPIView):
     serializer_class = SearchMedicineSerializer
     queryset = UserDetails
+    permission_classes = [AllowAny]    
 
-    # @login_required
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
 
