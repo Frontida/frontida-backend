@@ -26,5 +26,8 @@ class UserDetails(models.Model):
     point = models.PointField(geography=True, default=Point(0.0, 0.0))
     account = models.OneToOneField(User, on_delete=models.CASCADE)
 
+    class Meta:
+        app_label = "authentication"
+
     def __str__(self):
         return self.account.email

@@ -12,5 +12,8 @@ class SalesInventory(models.Model):
     )
     isexpired = models.BooleanField(default=False)
 
+    class Meta:
+        app_label = "medical_store"
+
     def __str__(self):
         return self.medicine_name

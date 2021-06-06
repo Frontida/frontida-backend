@@ -10,5 +10,8 @@ class CompanyDetails(models.Model):
     company_email = models.EmailField()
     gst_number = models.CharField(max_length=15)
 
+    class Meta:
+        app_label = "medical_store"
+
     def __str__(self):
         return self.company_name
