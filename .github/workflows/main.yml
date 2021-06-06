@@ -45,7 +45,7 @@ jobs:
           python-version: '3.x' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
       - name: Check Python version # checking the python version to see if 3.x is installed.
         run: python --version
-      - name: Install sudo package
+      - name: Install GDAL package
         run: |
           sudo apt-get install libgdal-dev
           sudo apt-get install gdal-bin
@@ -64,7 +64,6 @@ jobs:
           pipenv install --dev
       - name: Test
         run : |
-          pipenv run python manage.py migrate
           pipenv run python manage.py test
           
 #       - name: Activate Virtualenv
