@@ -46,9 +46,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = ["frontida.herokuapp.com"]
-AUTH_USER_MODEL = "authentication.User"
-SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
@@ -72,6 +69,10 @@ INSTALLED_APPS = [
     "social_django",
     "rest_framework_social_oauth2",
 ]
+
+ALLOWED_HOSTS = ["frontida.herokuapp.com"]
+AUTH_USER_MODEL = "authentication.User"
+SITE_ID = 1
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
