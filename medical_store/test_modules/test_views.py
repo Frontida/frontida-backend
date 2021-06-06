@@ -14,7 +14,7 @@ from ..serializers import (
     CompanyDetailsSerializers,
     MedicineInventorySerializers,
     PurchaseSerializers,
-    SalesSerializers,
+    SalesSerializers
 )
 from authentication.models import User
 
