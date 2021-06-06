@@ -35,10 +35,12 @@ jobs:
           python-version: '3.x' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
       - name: Check Python version # checking the python version to see if 3.x is installed.
         run: python --version
-      - name: Install requirements # install application requirements
+      - name: Install Pipenv
+        run: pip install pipenv
+      - name: Install Dependencies
         run: pipenv install --dev
-      - name: Check Syntax # check code formatting
-        run: pycodestyle --statistics .
+#       - name: Check Syntax # check code formatting
+#         run: pycodestyle --statistics .
       - name: Run Migrations # run migrations to create table in side car db container
         run: python manage.py migrate
       - name: Run Test # running tests
