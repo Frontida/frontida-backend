@@ -138,9 +138,9 @@ dmypy.json
 cython_debug/
 
 # Migrations
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+# **/migrations/**
+# !**/migrations
+# !**/migrations/__init__.py
 
 .idea
 
