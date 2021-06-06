@@ -3,8 +3,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from ..Models.userdetails import UserDetails
-from ..Serializers.userdetailsserializer import UserDetailsSerializers
+from ..models import UserDetails
+from ..serializers import UserDetailsSerializers
 
 class UserDetailsView(APIView):
     authentication_classes = [TokenAuthentication]

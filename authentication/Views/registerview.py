@@ -12,8 +12,8 @@ from django.conf import settings
 from rest_framework.authtoken.models import Token
 from django.core.mail import EmailMessage
 from rest_framework import status
-from ..Models.user import User
-from ..Serializers.registerserializer import RegisterSerializer
+from ..models import User
+from ..serializers import RegisterSerializer
 
 
 

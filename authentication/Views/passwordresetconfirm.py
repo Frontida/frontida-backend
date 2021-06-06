@@ -7,8 +7,8 @@ from rest_framework import status
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str, DjangoUnicodeDecodeError
 from rest_framework.exceptions import AuthenticationFailed
-from ..Models.user import User
-from ..Serializers.setnewpasswordserializer import SetNewPasswordSerializer
+from ..models import User
+from ..serializers import SetNewPasswordSerializer
 
 
 

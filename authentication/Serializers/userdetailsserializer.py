@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from ..Models.userdetails import UserDetails
+from ..models import UserDetails
 from rest_framework.response import Response
 
 class UserDetailsSerializers(ModelSerializer):

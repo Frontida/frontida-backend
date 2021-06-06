@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..Models.user import User
+from ..models import User
 # from rest_framework.serializers import ModelSerializer
 # from rest_framework.response import Response
 
