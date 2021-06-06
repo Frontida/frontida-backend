@@ -6,7 +6,7 @@ from rest_framework.decorators import action
 from rest_framework.generics import GenericAPIView
 from .serializers import SearchMedicineSerializer
 from authentication.models import UserDetails
-from authentication.Serializers.userdetailsserializer import UserDetailsSerializers
+from authentication.serializers import UserDetailsSerializers
 from django.contrib.gis.measure import D
 from django.contrib.gis.geos import GEOSGeometry
 from medical_store.models import MedicineInventory
