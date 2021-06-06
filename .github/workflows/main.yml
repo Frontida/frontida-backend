@@ -8,6 +8,13 @@ on:  [push, pull_request]
 jobs:
   health-check-job: # health check job for testing and code formatting check
     runs-on: ubuntu-latest # os for running the job
+    env:
+      SECRET_KEY : n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy
+      DEBUG : True
+      EMAIL_HOST_USER : healthcare.frontida@gmail.com
+      EMAIL_HOST_PASSWORD : iicnoaupdzdaqgmf
+      ON_HEROKU : False
+      FRONTEND_LOGIN_URL : https://frontida.netlify.app/signin
     services:
       postgres: # we need a postgres docker image to be booted a side car service to run the tests that needs a db
         image: postgres
