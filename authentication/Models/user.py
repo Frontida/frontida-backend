@@ -26,6 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     class Meta:
         unique_together = ("email", "user_type")
+        app_label = "authentication"
 
     USERNAME_FIELD = "email"
 
