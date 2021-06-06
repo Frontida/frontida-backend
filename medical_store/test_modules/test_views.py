@@ -358,6 +358,8 @@ class PurchaseViewSetsTest(APITestCase):
         self.assertEqual(
             MedicineInventory.objects.get(batch_number="98CTU").medicine_quantity, 200
         )
+        print(response.data.get("purchaseinventory")[0].get("medicine_name"))
+        print(response.data.get("purchaseinventory")[1].get("medicine_name"))
         self.assertEqual(
             response.data.get("purchaseinventory")[0].get("medicine_name"),
             "paracetamol",
