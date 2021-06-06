@@ -2,19 +2,19 @@
 name: Django CI/CD Workflow
 
 # triggers for our workflow
-on:  [push, pull_request]
+on: [push, pull_request]
 
 # three job definition
 jobs:
   health-check-job: # health check job for testing and code formatting check
     runs-on: ubuntu-latest # os for running the job
     env:
-      SECRET_KEY : n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy
-      DEBUG : True
-      EMAIL_HOST_USER : healthcare.frontida@gmail.com
-      EMAIL_HOST_PASSWORD : iicnoaupdzdaqgmf
-      ON_HEROKU : False
-      FRONTEND_LOGIN_URL : https://frontida.netlify.app/signin
+      SECRET_KEY: n@g5nm$#)r7p(enpdsyl#vk7v!x+s80j7t9kli9ngj@1&x56gy
+      DEBUG: True
+      EMAIL_HOST_USER: healthcare.frontida@gmail.com
+      EMAIL_HOST_PASSWORD: iicnoaupdzdaqgmf
+      ON_HEROKU: False
+      FRONTEND_LOGIN_URL: https://frontida.netlify.app/signin
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: frontida-backend
@@ -42,11 +42,11 @@ jobs:
       - name: Setup python environment # setting python environment to 3.x
         uses: actions/setup-python@v2
         with:
-          python-version: '3.x' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
-#       - name: Enable pgcrypto extension
-#         run: |
-#            PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'postgis';"
-#            PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'postgis_topology';"
+          python-version: "3.x" # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
+      #       - name: Enable pgcrypto extension
+      #         run: |
+      #            PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'postgis';"
+      #            PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'postgis_topology';"
       - name: Check Python version # checking the python version to see if 3.x is installed.
         run: python --version
       - name: Install GDAL package
@@ -56,7 +56,7 @@ jobs:
       - name: Install pipenv
         run: |
           python -m pip install --upgrade pipenv wheel
-          pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal" 
+          pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal"
       - id: cache-pipenv
         uses: actions/cache@v1
         with:
@@ -67,11 +67,10 @@ jobs:
         run: |
           pipenv install --dev
       - name: Test
-        run : |
-          pipenv run python manage.py makemigrations
+        run: |
           pipenv run python manage.py migrate
           pipenv run python manage.py test
-          
+
 #       - name: Activate Virtualenv
 #         run: pipenv shell
 # #       - name: Check Syntax # check code formatting
