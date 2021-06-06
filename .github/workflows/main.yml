@@ -15,6 +15,9 @@ jobs:
       EMAIL_HOST_PASSWORD : iicnoaupdzdaqgmf
       ON_HEROKU : False
       FRONTEND_LOGIN_URL : https://frontida.netlify.app/signin
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: github-actions
     services:
       postgres: # we need a postgres docker image to be booted a side car service to run the tests that needs a db
         image: postgres
