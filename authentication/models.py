@@ -29,6 +29,7 @@ CITY = [
     ("Gandinagar", "Gandhinagar"),
     ("Bhilwara", "Bhilwara"),
     ("Haldwani", "Haldwani"),
+    ("Ajmer", "Ajmer")
 ]
 
 
