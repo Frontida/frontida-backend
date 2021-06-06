@@ -44,6 +44,7 @@ jobs:
         run: python --version
       - name: Install sudo package
         run: |
+          sudo apt-get install libgdal-dev
           sudo apt-get install python-gdal
           sudo apt-get install gdal-bin
       - name: Install pipenv
