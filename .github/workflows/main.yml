@@ -43,6 +43,10 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.x' # if you want multiple python version run just use matrix strategy in job config. See the documentation of GitHub Actions
+      - name: Enable pgcrypto extension
+        run: |
+           PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'postgis';"
+           PGPASSWORD=postgres psql -U postgres -tc "CREATE EXTENSION 'postgis_topology';"
       - name: Check Python version # checking the python version to see if 3.x is installed.
         run: python --version
       - name: Install GDAL package
