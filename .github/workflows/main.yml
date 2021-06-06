@@ -48,12 +48,16 @@ jobs:
         if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           pipenv install --dev
+      - name: Test
+        run : |
+          pipenv run python manage.py migrate
+          pipenv run python manage.py test
           
-      - name: Activate Virtualenv
-        run: pipenv shell
-#       - name: Check Syntax # check code formatting
-#         run: pycodestyle --statistics .
-      - name: Run Migrations # run migrations to create table in side car db container
-        run: python manage.py migrate
-      - name: Run Test # running tests
-        run: python manage.py test
+#       - name: Activate Virtualenv
+#         run: pipenv shell
+# #       - name: Check Syntax # check code formatting
+# #         run: pycodestyle --statistics .
+#       - name: Run Migrations # run migrations to create table in side car db container
+#         run: python manage.py migrate
+#       - name: Run Test # running tests
+#         run: python manage.py test
