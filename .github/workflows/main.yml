@@ -27,6 +27,13 @@ jobs:
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
+      - name: Install sudo package
+        run: apt update && apt install sudo
+      - name: Installing TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install gdal-bin
+          sudo apt-get install libgdal-dev libgdal1h
       - name: Checkout code # checking our the code at current commit that triggers the workflow
         uses: actions/checkout@v2
       - name: Cache dependency # caching dependency will make our build faster.
@@ -45,6 +52,7 @@ jobs:
       - name: Install pipenv
         run: |
           python -m pip install --upgrade pipenv wheel
+          pip install GDAL==$(gdal-config --version) --global-option=build_ext --global-option="-I/usr/include/gdal" 
       - id: cache-pipenv
         uses: actions/cache@v1
         with:
