@@ -1,9 +1,13 @@
-from django.urls import path, include
-from .views import *
-
-# from rest_framework_simplejwt.views import (
-#     TokenRefreshView,
-# )
+from django.urls import path
+from .views import (
+    UserVerification,
+    RegisterView,
+    LoginAPI,
+    LogoutView,
+    UserDetailsView,
+    RequestPasswordResetEmail,
+    PasswordResetConfirm
+)
 
 
 urlpatterns = [
