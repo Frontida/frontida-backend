@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.geos import Point
-from .user import User
+from authentication.models.user_model import User
 
 CITY = [
     ("Jaipur", "Jaipur"),

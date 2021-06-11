@@ -4,8 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import Sales, MedicineInventory
-from ..serializers import SalesSerializers
+from medical_store.models import Sales, MedicineInventory
+from medical_store.serializers import SalesSerializers
 
 
 class SalesViewSets(ModelViewSet):

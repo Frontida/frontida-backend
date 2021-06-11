@@ -1,6 +1,6 @@
 from rest_framework.serializers import ModelSerializer
-from ..models import Sales, SalesInventory
-from .salesinventoryserializers import SalesInventorySerializers
+from medical_store.models import Sales, SalesInventory
+from medical_store.serializers import SalesInventorySerializers
 from rest_framework.response import Response
 
 

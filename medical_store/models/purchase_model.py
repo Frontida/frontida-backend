@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 
+
 class Purchase(models.Model):
     distributor_name = models.CharField(max_length=50)
     company_name = models.CharField(max_length=200)

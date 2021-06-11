@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
-from ..utils import CheckExpiry
+from medical_store.utils import CheckExpiry
 
 
 class ExpiryAPI(APIView):

@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 
+
 class Sales(models.Model):
     bill_number = models.CharField(max_length=10)
     customer_name = models.CharField(max_length=50)

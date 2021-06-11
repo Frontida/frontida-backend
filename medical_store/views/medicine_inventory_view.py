@@ -3,8 +3,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from ..models import MedicineInventory
-from ..serializers import MedicineInventorySerializers
+from medical_store.models import MedicineInventory
+from medical_store.serializers import MedicineInventorySerializers
 
 
 class MedicineInventoryViewSets(ViewSet):

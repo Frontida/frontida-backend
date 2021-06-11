@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from ..models import CompanyDetails
 
+
 class CompanyDetailsSerializers(ModelSerializer):
     class Meta:
         model = CompanyDetails

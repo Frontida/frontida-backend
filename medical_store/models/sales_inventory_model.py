@@ -1,16 +1,15 @@
 from django.db import models
-from .purchase import Purchase
+from medical_store.models import Sales
 
-class PurchaseInventory(models.Model):
+
+class SalesInventory(models.Model):
     medicine_name = models.CharField(max_length=200)
     quantity = models.IntegerField()
+    # prescription = models.CharField(max_length=)
     batch_number = models.CharField(max_length=20)
     price_of_each = models.PositiveIntegerField()
-    mrp = models.PositiveIntegerField()
-    mfd = models.DateField(null=False)
-    expiry = models.DateField(null=False)
-    purchase = models.ForeignKey(
-        Purchase, on_delete=models.DO_NOTHING, related_name="purchaseinventory"
+    sales_id = models.ForeignKey(
+        Sales, on_delete=models.DO_NOTHING, related_name="salesinventory"
     )
     isexpired = models.BooleanField(default=False)
 

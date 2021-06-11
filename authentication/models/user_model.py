@@ -3,7 +3,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser,
     PermissionsMixin,
 )
-from .usermanager import UserManager
+from authentication.models.user_manager import UserManager
 
 
 USER_TYPE = [

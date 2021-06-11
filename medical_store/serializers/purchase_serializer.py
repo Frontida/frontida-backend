@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
-from ..models import Purchase, PurchaseInventory
-from .purchaseinventoryserializer import PurchaseInventorySerializers
+from medical_store.models import Purchase, PurchaseInventory
+from medical_store.serializers import PurchaseInventorySerializers
+
 
 class PurchaseSerializers(ModelSerializer):
 

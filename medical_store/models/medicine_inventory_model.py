@@ -1,6 +1,7 @@
 from django.db import models
 from authentication.models import User
 
+
 class MedicineInventory(models.Model):
     HSNcode = models.CharField(max_length=6, default="3004", blank=True)
     batch_number = models.CharField(max_length=20)

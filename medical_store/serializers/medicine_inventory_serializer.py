@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from ..models import MedicineInventory
 
+
 class MedicineInventorySerializers(ModelSerializer):
     class Meta:
         model = MedicineInventory

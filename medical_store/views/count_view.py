@@ -4,7 +4,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from rest_framework import status
 from collections import Counter
-from ..models import Purchase, MedicineInventory, Sales
+from medical_store.models import Purchase, MedicineInventory, Sales
 
 
 class CountAPI(APIView):
