@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from django.contrib.auth import authenticate, login
 from rest_framework import status
 from rest_framework.authtoken.models import Token
-from ..models import UserDetails
-from ..serializers import UserDetailsSerializers, LoginSerializer
+from authentication.models import UserDetails
+from authentication.serializers import UserDetailsSerializers, LoginSerializer
 
 
 class LoginAPI(APIView):

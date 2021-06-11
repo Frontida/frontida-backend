@@ -2,6 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from ..models import UserDetails
 from rest_framework.response import Response
 
+
 class UserDetailsSerializers(ModelSerializer):
     class Meta:
         model = UserDetails

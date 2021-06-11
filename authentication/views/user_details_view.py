@@ -6,6 +6,7 @@ from rest_framework import status
 from ..models import UserDetails
 from ..serializers import UserDetailsSerializers
 
+
 class UserDetailsView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]

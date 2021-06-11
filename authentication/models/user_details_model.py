@@ -12,8 +12,9 @@ CITY = [
     ("Gandinagar", "Gandhinagar"),
     ("Bhilwara", "Bhilwara"),
     ("Haldwani", "Haldwani"),
-    ("Ajmer", "Ajmer")
+    ("Ajmer", "Ajmer"),
 ]
+
 
 class UserDetails(models.Model):
     store_name = models.CharField(max_length=100, unique=False)

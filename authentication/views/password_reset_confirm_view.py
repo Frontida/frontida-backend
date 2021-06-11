@@ -7,9 +7,8 @@ from rest_framework import status
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str, DjangoUnicodeDecodeError
 from rest_framework.exceptions import AuthenticationFailed
-from ..models import User
-from ..serializers import SetNewPasswordSerializer
-
+from authentication.models import User
+from authentication.serializers import SetNewPasswordSerializer
 
 
 class PasswordResetConfirm(APIView):

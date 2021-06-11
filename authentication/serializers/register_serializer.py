@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from ..models import User
+
 # from rest_framework.serializers import ModelSerializer
 # from rest_framework.response import Response
 
 USER_TYPE = [("MEDICAL STORE", "MEDICAL STORE"), ("AMBULANCE", "AMBULANCE")]
+
 
 class RegisterSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)

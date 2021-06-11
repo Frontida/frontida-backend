@@ -6,12 +6,14 @@ from rest_framework.response import Response
 from django.contrib.auth import logout
 from rest_framework import status
 
+
 class LogoutView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
+            print(request.user.auth_token)
             request.user.auth_token.delete()
         except Exception as exp:
             raise AuthenticationFailed(exp, 401)

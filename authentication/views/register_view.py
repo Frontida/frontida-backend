@@ -2,19 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import (
-    force_str,
-    smart_bytes
-)
+from django.utils.encoding import force_str, smart_bytes
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 from django.conf import settings
 from rest_framework.authtoken.models import Token
 from django.core.mail import EmailMessage
 from rest_framework import status
-from ..models import User
-from ..serializers import RegisterSerializer
-
+from authentication.models import User
+from authentication.serializers import RegisterSerializer
 
 
 class RegisterView(APIView):
@@ -31,7 +27,8 @@ class RegisterView(APIView):
         user = User.objects.create_user(**serializer.validated_data)
         print(user)
         uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
-        token = Token.objects.create(user=user).key
+        token, created = Token.objects.get_or_create(user=user)
+        print(token, created)
 
         user_verification_link = get_current_site(request).domain + reverse(
             "user_verification", kwargs={"uidb64": uidb64, "token": token}

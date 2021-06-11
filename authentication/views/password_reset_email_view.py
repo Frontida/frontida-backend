@@ -7,8 +7,8 @@ from rest_framework import status
 from django.core.mail import EmailMessage
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import smart_bytes
-from ..models import User
-from ..serializers import PasswordResetEmailRequestSerializer
+from authentication.models import User
+from authentication.serializers import PasswordResetEmailRequestSerializer
 
 
 class RequestPasswordResetEmail(APIView):
