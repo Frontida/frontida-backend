@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.authtoken.models import Token
-from ..models import (
+from medical_store.models import (
     CompanyDetails,
     MedicineInventory,
     Purchase,
@@ -10,11 +10,11 @@ from ..models import (
     Sales,
     SalesInventory,
 )
-from ..serializers import (
+from medical_store.serializers import (
     CompanyDetailsSerializers,
     MedicineInventorySerializers,
     PurchaseSerializers,
-    SalesSerializers
+    SalesSerializers,
 )
 from authentication.models import User
 
