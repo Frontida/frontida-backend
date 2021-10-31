@@ -1,13 +1,13 @@
 from rest_framework.routers import SimpleRouter
 from django.urls import path
-from .views import(
+from .views import (
     CountAPI,
     ExpiryAPI,
     StockAPI,
     MedicineInventoryViewSets,
     CompanyDetailsViewSets,
     PurchaseViewSets,
-    SalesViewSets
+    SalesViewSets,
 )
 
 app_name = "medical_store"

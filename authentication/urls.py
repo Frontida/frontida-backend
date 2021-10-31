@@ -6,7 +6,7 @@ from .views import (
     LogoutView,
     UserDetailsView,
     RequestPasswordResetEmail,
-    PasswordResetConfirm
+    PasswordResetConfirm,
 )
 
 

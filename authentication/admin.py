@@ -8,5 +8,6 @@ from mapwidgets.widgets import GooglePointFieldWidget
 class PointLocation(admin.ModelAdmin):
     formfield_overrides = {models.PointField: {"widget": GooglePointFieldWidget}}
 
+
 admin.site.register(User)
 admin.site.register(UserDetails, PointLocation)
