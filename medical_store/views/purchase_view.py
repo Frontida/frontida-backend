@@ -36,7 +36,7 @@ class PurchaseViewSets(ModelViewSet):
             )
         except CompanyDetails.DoesNotExist as exp:
             return Response(
-                {"error": "Invalid company name"}, status=status.HTTP_200_OK
+                {"error": "Invalid company name"}, status=status.HTTP_400_BAD_REQUEST
             )
         purchase = serializer.save(account=request.user, company_name=company)
         purchase_inventory = purchase.purchaseinventory.all()

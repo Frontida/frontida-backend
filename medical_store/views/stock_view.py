@@ -21,7 +21,7 @@ class StockAPI(APIView):
             medicines = MedicineInventory.objects.filter(medicine_name=medicine_name)
             count = 0
             for medicine in medicines:
-                print(medicine)
+                # print(medicine)
                 count += medicine.medicine_quantity
             if count < 10:
                 low_stock[medicine_name] = count
