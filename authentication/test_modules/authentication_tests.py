@@ -47,3 +47,20 @@ class SigninTests(TestCase):
             {"email": self.user_1.email, "password": self.user_1.password},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+class SignupTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_signup_user(self):
+        request_url = "/auth/register/"
+        response = self.client.post(
+            request_url,
+            {
+                "email": "healthcare.frontida@gmail.com",
+                "password": "test1234",
+                "user_type": "MEDICAL STORE",
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)

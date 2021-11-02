@@ -334,7 +334,7 @@ class PurchaseViewSetsTest(APITestCase):
         user_token = Token.objects.get(user=self.test_user)
         self.client.credentials(HTTP_AUTHORIZATION="Token " + user_token.key)
         response = self.client.post(url, self.data, format="json")
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data.get("error"), "Invalid company name")
 
         # With Valid company name and auth token

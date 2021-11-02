@@ -25,10 +25,8 @@ class RegisterView(APIView):
                 return Response({f"{error_keys[0]}": f"{error_values[0][0]}"})
 
         user = User.objects.create_user(**serializer.validated_data)
-        print(user)
         uidb64 = urlsafe_base64_encode(smart_bytes(user.id))
         token, created = Token.objects.get_or_create(user=user)
-        print(token, created)
 
         user_verification_link = get_current_site(request).domain + reverse(
             "user_verification", kwargs={"uidb64": uidb64, "token": token}
